@@ -1,0 +1,14 @@
+- hosts: web 
+  tasks:
+    - name: "Instalar Nginx"
+      apt:
+        update_cache: yes
+        name: nginx
+        state: latest
+      become: yes
+
+    - name: "Copiar nova página"
+      copy:
+        src: "~/ansible/index.html"
+        dest: "/var/www/html/index.html"
+      become: yes
