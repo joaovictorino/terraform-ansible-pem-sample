@@ -54,8 +54,3 @@ resource "azurerm_linux_virtual_machine" "vm" {
     local_file.private_key
   ]
 }
-
-data "azurerm_public_ip" "data-publicip" {
-  name = azurerm_public_ip.publicip.name
-  resource_group_name = azurerm_resource_group.aulainfra.name
-}

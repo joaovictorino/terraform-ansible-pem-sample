@@ -61,11 +61,6 @@ resource "azurerm_linux_virtual_machine" "vm-ansible" {
   ]
 }
 
-data "azurerm_public_ip" "data-publicip-ansible" {
-  name = azurerm_public_ip.publicip-ansible.name
-  resource_group_name = azurerm_resource_group.aulainfra.name
-}
-
 resource "local_file" "create-inventory"{
     filename = "./ansible/inventory"
     content = <<EOF
@@ -87,7 +82,7 @@ resource "null_resource" "upload-ansible-files"{
     provisioner "file" {
         connection {
             type = "ssh"
-            host = data.azurerm_public_ip.data-publicip-ansible.ip_address
+            host = azurerm_public_ip.publicip-ansible.ip_address
             user = "adminuser"
             private_key = tls_private_key.private-key.private_key_pem
         }
@@ -108,7 +103,7 @@ resource "null_resource" "install-ansible" {
 
   connection {
     type = "ssh"
-    host = data.azurerm_public_ip.data-publicip-ansible.ip_address
+    host = azurerm_public_ip.publicip-ansible.ip_address
     user = "adminuser"
     private_key = tls_private_key.private-key.private_key_pem
   }
@@ -134,7 +129,7 @@ resource "null_resource" "run-ansible" {
 
   connection {
     type = "ssh"
-    host = data.azurerm_public_ip.data-publicip-ansible.ip_address
+    host = azurerm_public_ip.publicip-ansible.ip_address
     user = "adminuser"
     private_key = tls_private_key.private-key.private_key_pem
   }
